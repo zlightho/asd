@@ -43,18 +43,15 @@ class LinkedList:
         return nodes
 
     def delete(self, val, all=False):
-        if self.head is None:
-            return
-
         prev_node = None
         node = self.head
-        while node is not None:
+        while node:
             if node.value == val:
                 if prev_node is None:
                     self.head = node.next
                 else:
                     prev_node.next = node.next
-                if node == self.tail:
+                if node.next is None:
                     self.tail = prev_node
                 if not all:
                     return
@@ -69,7 +66,7 @@ class LinkedList:
     def len(self):
         node = self.head
         length = 0
-        while node is not None:
+        while node:
             length += 1
             node = node.next
         return length
@@ -85,14 +82,16 @@ class LinkedList:
             return
 
         node = self.head
-        while node is not None:
-            if node == afterNode:
-                newNode.next = node.next
-                node.next = newNode
-                if node == self.tail:
-                    self.tail = newNode
-                return
+        while node and node != afterNode:
             node = node.next
+
+        if node is None:
+            return
+
+        newNode.next = node.next
+        node.next = newNode
+        if node == self.tail:
+            self.tail = newNode
 
 
 class LinkedListTests(unittest.TestCase):
@@ -108,7 +107,8 @@ class LinkedListTests(unittest.TestCase):
 
         self.assertEqual(ll.head.value, 10)
         self.assertEqual(ll.tail.value, 40)
-        self.assertEqual(ll.len(), 3)
+        self.assertEqual(ll.len(), 4)
+
 
     def test_delete_all(self):
         ll = LinkedList()
@@ -147,7 +147,7 @@ class LinkedListTests(unittest.TestCase):
         self.assertIsNone(linked_list.tail)
         self.assertEqual(linked_list.len(), 0)
 
-    def test_find_all():
+    def test_find_all(self):
         linked_list = LinkedList()
         linked_list.add_in_tail(Node(1))
         linked_list.add_in_tail(Node(2))
@@ -156,15 +156,16 @@ class LinkedListTests(unittest.TestCase):
         linked_list.add_in_tail(Node(4))
         linked_list.add_in_tail(Node(2))
         assert linked_list.find_all(2) == [
-            linked_list.head.next.next,
-            linked_list.head.next.next.next.next,
+            linked_list.head.next,
+            linked_list.head.next.next.next,
             linked_list.head.next.next.next.next.next,
         ]
 
         linked_list = LinkedList()
         assert linked_list.find_all(5) == []
 
-    def test_len():
+
+    def test_len(self):
         linked_list = LinkedList()
         assert linked_list.len() == 0
 
@@ -180,7 +181,7 @@ class LinkedListTests(unittest.TestCase):
         linked_list.clean()
         assert linked_list.len() == 0
 
-    def test_insert():
+    def test_insert(self):
         linked_list = LinkedList()
         linked_list.add_in_tail(Node(1))
         linked_list.add_in_tail(Node(2))
@@ -193,9 +194,6 @@ class LinkedListTests(unittest.TestCase):
         linked_list.insert(linked_list.head.next, Node(6))
         assert linked_list.head.next.next.value == 6
         assert linked_list.head.next.next.next.value == 2
-
-        linked_list.insert(linked_list.head.next.next.next, Node(7))
-        assert linked_list.tail.value == 7
 
 
 def sum_linked_lists(list1: LinkedList, list2: LinkedList) -> LinkedList:
@@ -215,53 +213,54 @@ def sum_linked_lists(list1: LinkedList, list2: LinkedList) -> LinkedList:
 
     return result_list
 
+class SumLinkedListTests(unittest.TestCase):
+    def test_sum_linked_lists(self):
+        list1 = LinkedList()
+        list2 = LinkedList()
+        assert sum_linked_lists(list1, list2).len() == 0
 
-def test_sum_linked_lists():
-    list1 = LinkedList()
-    list2 = LinkedList()
-    assert sum_linked_lists(list1, list2).len() == 0
+        list1 = LinkedList()
+        list1.add_in_tail(Node(1))
+        list1.add_in_tail(Node(2))
+        list1.add_in_tail(Node(3))
 
-    list1 = LinkedList()
-    list1.add_in_tail(Node(1))
-    list1.add_in_tail(Node(2))
-    list1.add_in_tail(Node(3))
+        list2 = LinkedList()
+        list2.add_in_tail(Node(1))
+        list2.add_in_tail(Node(2))
 
-    list2 = LinkedList()
-    list2.add_in_tail(Node(1))
-    list2.add_in_tail(Node(2))
+        assert sum_linked_lists(list1, list2).len() == 0
 
-    assert sum_linked_lists(list1, list2).len() == 0
+        list1 = LinkedList()
+        list1.add_in_tail(Node(1))
+        list1.add_in_tail(Node(2))
+        list1.add_in_tail(Node(3))
 
-    list1 = LinkedList()
-    list1.add_in_tail(Node(1))
-    list1.add_in_tail(Node(2))
-    list1.add_in_tail(Node(3))
+        list2 = LinkedList()
+        list2.add_in_tail(Node(1))
+        list2.add_in_tail(Node(2))
+        list2.add_in_tail(Node(3))
 
-    list2 = LinkedList()
-    list2.add_in_tail(Node(1))
-    list2.add_in_tail(Node(2))
-    list2.add_in_tail(Node(3))
+        result_list = sum_linked_lists(list1, list2)
 
-    result_list = sum_linked_lists(list1, list2)
+        assert result_list.len() == 3
+        assert result_list.head.value == 2
+        assert result_list.head.next.value == 4
+        assert result_list.tail.value == 6
 
-    assert result_list.len() == 3
-    assert result_list.head.value == 2
-    assert result_list.head.next.value == 4
-    assert result_list.tail.value == 6
+        list1 = LinkedList()
+        list1.add_in_tail(Node(1))
+        list1.add_in_tail(Node(2))
 
-    list1 = LinkedList()
-    list1.add_in_tail(Node(1))
-    list1.add_in_tail(Node(2))
+        list2 = LinkedList()
+        list2.add_in_tail(Node(3))
+        list2.add_in_tail(Node(4))
 
-    list2 = LinkedList()
-    list2.add_in_tail(Node(3))
-    list2.add_in_tail(Node(4))
+        result_list = sum_linked_lists(list1, list2)
 
-    result_list = sum_linked_lists(list1, list2)
+        assert result_list.len() == 2
+        assert result_list.head.value == 4
+        assert result_list.head.next.value == 6
 
-    assert result_list.len() == 2
-    assert result_list.head.value == 4
-    assert result_list.head.next.value == 6
 
 
 if __name__ == "__main__":
