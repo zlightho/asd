@@ -1,3 +1,8 @@
+import unittest
+
+from main import Node, LinkedList, sum_linked_lists
+
+
 class LinkedListTests(unittest.TestCase):
     def test_delete(self):
         ll = LinkedList()
