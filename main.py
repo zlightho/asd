@@ -1,10 +1,11 @@
 class Node:
     def __init__(self, v):
         self.value = v
+        self.prev = None
         self.next = None
 
 
-class LinkedList:
+class LinkedList2:
     def __init__(self):
         self.head = None
         self.tail = None
@@ -12,15 +13,12 @@ class LinkedList:
     def add_in_tail(self, item):
         if self.head is None:
             self.head = item
+            item.prev = None
+            item.next = None
         else:
             self.tail.next = item
+            item.prev = self.tail
         self.tail = item
-
-    def print_all_nodes(self):
-        node = self.head
-        while node is not None:
-            print(node.value)
-            node = node.next
 
     def find(self, val):
         node = self.head
@@ -40,20 +38,19 @@ class LinkedList:
         return nodes
 
     def delete(self, val, all=False):
-        prev_node = None
         node = self.head
-        while node:
+        while node is not None:
             if node.value == val:
-                if prev_node is None:
+                if node.prev is None:
                     self.head = node.next
                 else:
-                    prev_node.next = node.next
+                    node.prev.next = node.next
                 if node.next is None:
-                    self.tail = prev_node
+                    self.tail = node.prev
+                else:
+                    node.next.prev = node.prev
                 if not all:
-                    return
-            else:
-                prev_node = node
+                    break
             node = node.next
 
     def clean(self):
@@ -61,49 +58,39 @@ class LinkedList:
         self.tail = None
 
     def len(self):
-        node = self.head
         length = 0
-        while node:
+        node = self.head
+        while node is not None:
             length += 1
             node = node.next
         return length
 
     def insert(self, afterNode, newNode):
-        if afterNode is None and self.head is None:
-            self.add_in_tail(newNode)
-            return
-
+        print("afterNode:", afterNode)
+        print("newNode:", newNode)
         if afterNode is None:
-            newNode.next = self.head
-            self.head = newNode
+            self.add_in_head(newNode)
             return
 
-        node = self.head
-        while node and node != afterNode:
-            node = node.next
+        newNode.prev = afterNode
+        newNode.next = afterNode.next
 
-        if node is None:
-            return
+        if afterNode.next is not None:
+            afterNode.next.prev = newNode
 
-        newNode.next = node.next
-        node.next = newNode
-        if node == self.tail:
+        afterNode.next = newNode
+
+        if newNode.next is not None:
             self.tail = newNode
 
-
-def sum_linked_lists(list1: LinkedList, list2: LinkedList) -> LinkedList:
-    result_list = LinkedList()
-
-    if list1.len() != list2.len():
-        return result_list
-
-    node1 = list1.head
-    node2 = list2.head
-    while node1 is not None:
-        sum_value = node1.value + node2.value
-        new_node = Node(sum_value)
-        result_list.add_in_tail(new_node)
-        node1 = node1.next
-        node2 = node2.next
-
-    return result_list
+    def add_in_head(self, newNode):
+        if self.head is None:
+            self.head = newNode
+            self.tail = newNode
+            newNode.prev = None
+            newNode.next = None
+        else:
+            newNode.next = self.head
+            self.head.prev = newNode
+            self.head = newNode
+            self.head.prev = None

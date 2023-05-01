@@ -1,6 +1,6 @@
 import unittest
 
-from main import Node, LinkedList, sum_linked_lists
+from linkedlist import Node, LinkedList, sum_linked_lists
 
 
 class LinkedListTests(unittest.TestCase):
