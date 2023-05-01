@@ -77,9 +77,9 @@ class LinkedList2:
                 self.head = newNode
                 self.tail = newNode
             else:
-                newNode.next = self.head
-                self.head.prev = newNode
-                self.head = newNode
+                newNode.prev = self.tail
+                self.tail.next = newNode
+                self.tail = newNode
         else:
             newNode.next = afterNode.next
             newNode.prev = afterNode
