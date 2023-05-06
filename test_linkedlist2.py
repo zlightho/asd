@@ -1,6 +1,6 @@
 import unittest
 
-from main import LinkedList2, Node
+from linkedlist2 import LinkedList2, Node
 
 
 class LinkedList2Tests(unittest.TestCase):
