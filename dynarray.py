@@ -67,6 +67,6 @@ class DynArray:
         self.array[self.count - 1] = 0
         self.count -= 1
         # проверяем заполненность буфера после удаления
-        if self.count < self.capacity // 2 and self.capacity > 16:
-            new_capacity = max(self.capacity // 1.5, 16)
+        if self.count < self.capacity:
+            new_capacity = max(int(self.capacity / 1.5), 16)
             self.resize(new_capacity)
