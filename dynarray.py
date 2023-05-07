@@ -60,13 +60,13 @@ class DynArray:
             self.array[i] = 0
             self.count -= 1
             return
+        else:
+            for j in range(i, self.count - 1):
+                self.array[j] = self.array[j + 1]
 
-        for j in range(i, self.count - 1):
-            self.array[j] = self.array[j + 1]
-
-        self.array[self.count - 1] = 0
-        self.count -= 1
+            self.array[self.count - 1] = 0
+            self.count -= 1
         # проверяем заполненность буфера после удаления
-        if self.count < self.capacity:
-            new_capacity = max(int(self.capacity / 1.5), 16)
+        if self.capacity > 16 and self.count < self.capacity // 2:
+            new_capacity = max(16, int(self.capacity / 1.5))
             self.resize(new_capacity)
