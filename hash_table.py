@@ -30,7 +30,7 @@ class HashTable:
             return index
         return None
 
-    def find(self, value):
+    def get(self, value):
         # находит индекс слота со значением, или None
         index = self.hash_fun(value)
         if self.slots[index] == value:
