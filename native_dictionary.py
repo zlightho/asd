@@ -16,16 +16,17 @@ class NativeDictionary:
         return self.slots[index] == key
 
     def put(self, key, value):
-        index = self.hash_fun(key)
-        self.slots[index] = key
-        self.values = value
         # гарантированно записываем
         # значение value по ключу key
+        index = self.hash_fun(key)
+        self.slots[index] = key
+        self.values[index] = value
+
 
     def get(self, key):
         # возвращает value для key,
         # или None если ключ не найден
-        index = self.hash_fun(key)
+        index = self.hash_fun(key)  
         if self.slots[index] == key:
             return self.values[index]
         return None
