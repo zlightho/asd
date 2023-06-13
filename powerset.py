@@ -30,25 +30,25 @@ class PowerSet:
     def intersection(self, set2):
         # пересечение текущего множества и set2
         result = PowerSet()
-        for value in self.items:
-            if set2.get(value):
+        for value in set2.items:
+            if value in self.items:
                 result.put(value)
         return result
 
     def union(self, set2):
         # объединение текущего множества и set2
         result = PowerSet()
-        for value in self.items:
-            result.put(value)
+        result.items = self.items.copy()
         for value in set2.items:
-            result.put(value)
+            if not result.get(value):
+                result.put(value)
         return result
 
     def difference(self, set2):
         # разница текущего множества и set2
         result = PowerSet()
         for value in self.items:
-            if not set2.get(value):
+            if value not in set2.items and not result.get(value):
                 result.put(value)
         return result
 
