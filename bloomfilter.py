@@ -23,6 +23,6 @@ class BloomFilter:
         self.bit_array[index] = 1
 
     def is_value(self, str1):
-        # Проверка, принадлежит ли строка фильтру
-        index = self.hash1(str1)
-        return self.bit_array[index] == 1
+        index1 = self.hash1(str1)
+        index2 = self.hash2(str1)
+        return self.bit_array[index1] == 1 and self.bit_array[index2] == 1
