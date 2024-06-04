@@ -1,7 +1,7 @@
 from typing import List
 
 
-def recursion_list_length(spisok: List[int], length=0) -> int:
+def recursion_list_length(spisok: List[int]) -> int:
     if not spisok:
         return 0
     spisok.pop(0)
