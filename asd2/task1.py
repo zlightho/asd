@@ -1,12 +1,12 @@
-def recursion_exponent_n_m(n: int, m: int) -> int:
+def recursion_exponent_n_m(n: int, m: int, result=1) -> int:
     if m == 0:
-        result = 1
+        return result
     elif m < 0:
-        result = 1 / recursion_exponent_n_m(n, -m)
+        return 1 / recursion_exponent_n_m(n, -m, result=result)
     else:
-        result = n * recursion_exponent_n_m(n, m - 1)
-
-    return result
+        return recursion_exponent_n_m(n, m - 1, result * n)
 
 
-print(recursion_exponent_n_m(3, 3))
+print(recursion_exponent_n_m(3, 0))
+print(recursion_exponent_n_m(3, -2))
+print(recursion_exponent_n_m(3, 4))
