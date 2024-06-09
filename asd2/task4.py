@@ -1,6 +1,16 @@
-def recursion_is_palindrom(string: str) -> bool:
-    if len(string) <= 1:
+def recursion_is_palindrom(string: str, left=None, right=None) -> bool:
+    if left is None:
+        left = 0
+    if right is None:
+        right = len(string) - 1
+
+    if left >= right:
         return True
-    if string[0] != string[-1]:
+    # Если символы на текущих указателях не равны, строка не палиндром
+    if string[left] != string[right]:
         return False
-    return recursion_is_palindrom(string[1:-1])
+    # Рекурсивный вызов с продвижением указателей
+    return recursion_is_palindrom(string,left + 1, right - 1)
+
+my_string="арозаупаланалапуазора"
+recursion_is_palindrom(my_string)
