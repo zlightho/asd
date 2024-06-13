@@ -1,9 +1,7 @@
 from typing import List
 
 
-def recursive_find_second_max(
-    spisok: List[int], max1: int, max2: int, index: int
-) -> int:
+def recursive_find_second_max(spisok: List, max1, max2, index):
     if index >= len(spisok):
         return max2
 
@@ -20,9 +18,13 @@ def recursive_find_second_max(
     return recursive_find_second_max(spisok, max1, max2, index + 1)
 
 
-def find_second_max(spisok: List[int]) -> int:
+def find_second_max(spisok: List):
     if spisok[0] > spisok[1]:
         max1, max2 = spisok[0], spisok[1]
     elif spisok[0] <= spisok[1]:
         max1, max2 = spisok[1], spisok[0]
     return recursive_find_second_max(spisok, max1, max2, 2)
+
+
+my_list = (1, 2, 4, 5, 6, 6)
+print(find_second_max(my_list))
