@@ -11,7 +11,3 @@ def recursive_find_files(directory: str) -> List[str]:
         else:
             files_list.append(full_path)
     return files_list
-
-
-def find_all_files(directory: str) -> List[str]:
-    return recursive_find_files(directory)

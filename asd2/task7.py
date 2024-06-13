@@ -21,4 +21,8 @@ def recursive_find_second_max(
 
 
 def find_second_max(spisok: List[int]) -> int:
-    return recursive_find_second_max(spisok, float("-inf"), float("-inf"), 0)
+    if spisok[0] > spisok[1]:
+        max1, max2 = spisok[0], spisok[1]
+    elif spisok[0] <= spisok[1]:
+        max1, max2 = spisok[1], spisok[0]
+    return recursive_find_second_max(spisok, max1, max2, 2)
