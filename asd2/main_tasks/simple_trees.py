@@ -67,3 +67,13 @@ class SimpleTree:
         # количество листьев в дереве
         all_nodes = self.GetAllNodes()
         return sum(1 for node in all_nodes if not node.Children)
+
+    def SetLevels(self):
+        if self.Root is None:
+            return
+        self._SetLevelsRecursive(self.Root, 0)
+
+    def _SetLevelsRecursive(self, node, level):
+        node.Level = level
+        for child in node.Children:
+            self._SetLevelsRecursive(child, level + 1)
