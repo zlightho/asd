@@ -29,6 +29,20 @@ class TestSimpleTree(unittest.TestCase):
         self.assertNotIn(child, self.root.Children)
         self.assertIsNone(child.Parent)
 
+    def test_DeleteSubtree(self):
+        child1 = SimpleTreeNode(2, None)
+        child2 = SimpleTreeNode(3, None)
+        grandchild = SimpleTreeNode(4, None)
+        self.tree.AddChild(self.root, child1)
+        self.tree.AddChild(child1, grandchild)
+        self.tree.AddChild(self.root, child2)
+
+        self.tree.DeleteNode(child1)
+        all_nodes = self.tree.GetAllNodes()
+
+        self.assertNotIn(child1, all_nodes)
+        self.assertNotIn(grandchild, all_nodes)
+
     def test_GetAllNodes(self):
         child1 = SimpleTreeNode(2, None)
         child2 = SimpleTreeNode(3, None)
