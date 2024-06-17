@@ -74,6 +74,31 @@ class TestSimpleTree(unittest.TestCase):
         self.assertIn(child1, child2.Children)
         self.assertEqual(child1.Parent, child2)
 
+    def test_MoveNode_and_GetAllNodes(self):
+        child1 = SimpleTreeNode(2, None)
+        child2 = SimpleTreeNode(3, None)
+        grandchild1 = SimpleTreeNode(4, None)
+        grandchild2 = SimpleTreeNode(5, None)
+        self.tree.AddChild(self.root, child1)
+        self.tree.AddChild(self.root, child2)
+        self.tree.AddChild(child1, grandchild1)
+        self.tree.AddChild(child1, grandchild2)
+
+        self.tree.MoveNode(child1, child2)
+
+        all_nodes = self.tree.GetAllNodes()
+        self.assertEqual(len(all_nodes), 5)
+        self.assertIn(self.root, all_nodes)
+        self.assertIn(child1, all_nodes)
+        self.assertIn(child2, all_nodes)
+        self.assertIn(grandchild1, all_nodes)
+        self.assertIn(grandchild2, all_nodes)
+
+        self.assertEqual(child1.Parent, child2)
+        self.assertIn(child1, child2.Children)
+        self.assertEqual(grandchild1.Parent, child1)
+        self.assertEqual(grandchild2.Parent, child1)
+
     def test_Count(self):
         child1 = SimpleTreeNode(2, None)
         child2 = SimpleTreeNode(3, None)

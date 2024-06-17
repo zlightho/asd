@@ -56,8 +56,9 @@ class SimpleTree:
         # ваш код перемещения узла вместе с его поддеревом --
         # в качестве дочернего для узла NewParent
         if OriginalNode is not None and NewParent is not None:
-            self.DeleteNode(OriginalNode)
-            self.AddChild(NewParent, OriginalNode)
+            OriginalNode.Parent.Children.remove(OriginalNode)
+            NewParent.Children.append(OriginalNode)
+            OriginalNode.Parent = NewParent
 
     def Count(self):
         # количество всех узлов в дереве
