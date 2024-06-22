@@ -89,6 +89,52 @@ class TestBST(unittest.TestCase):
         self.tree.AddKeyValue(15, "right")
         self.assertEqual(self.tree.Count(), 3)
 
+    def test_WideAllNodes(self):
+        self.tree.AddKeyValue(5, 'left')
+        self.tree.AddKeyValue(15, 'right')
+        self.tree.AddKeyValue(2, 'left-left')
+        self.tree.AddKeyValue(7, 'left-right')
+        self.tree.AddKeyValue(12, 'right-left')
+        self.tree.AddKeyValue(20, 'right-right')
+
+        wide_nodes = self.tree.WideAllNodes()
+        keys = [node.NodeKey for node in wide_nodes]
+        expected_keys = [10, 5, 15, 2, 7, 12, 20]
+
+        self.assertEqual(keys, expected_keys)
+    
+    def test_DeepAllNodes_in_order(self):
+        self.tree.AddKeyValue(5, 'left')
+        self.tree.AddKeyValue(15, 'right')
+        self.tree.AddKeyValue(2, 'left-left')
+        self.tree.AddKeyValue(7, 'left-right')
+        self.tree.AddKeyValue(12, 'right-left')
+        self.tree.AddKeyValue(20, 'right-right')
+
+        deep_nodes = self.tree.DeepAllNodes(0)
+        self.assertEqual([node[0].NodeKey for node in deep_nodes], [2, 5, 7, 10, 12, 15, 20])
+
+    def test_DeepAllNodes_post_order(self):
+        self.tree.AddKeyValue(5, 'left')
+        self.tree.AddKeyValue(15, 'right')
+        self.tree.AddKeyValue(2, 'left-left')
+        self.tree.AddKeyValue(7, 'left-right')
+        self.tree.AddKeyValue(12, 'right-left')
+        self.tree.AddKeyValue(20, 'right-right')
+
+        deep_nodes = self.tree.DeepAllNodes(1)
+        self.assertEqual([node[0].NodeKey for node in deep_nodes], [2, 7, 5, 12, 20, 15, 10])
+
+    def test_DeepAllNodes_pre_order(self):
+        self.tree.AddKeyValue(5, 'left')
+        self.tree.AddKeyValue(15, 'right')
+        self.tree.AddKeyValue(2, 'left-left')
+        self.tree.AddKeyValue(7, 'left-right')
+        self.tree.AddKeyValue(12, 'right-left')
+        self.tree.AddKeyValue(20, 'right-right')
+
+        deep_nodes = self.tree.DeepAllNodes(2)
+        self.assertEqual([node[0].NodeKey for node in deep_nodes], [10, 5, 2, 7, 15, 12, 20])
 
 if __name__ == "__main__":
     unittest.main()

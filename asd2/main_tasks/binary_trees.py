@@ -44,7 +44,7 @@ class BST:
                 current = current.RightChild
 
         return result
-
+    
     def AddKeyValue(self, key, val):
         find_result = self.FindNodeByKey(key)
 
@@ -129,3 +129,50 @@ class BST:
             + self._CountRecursive(node.LeftChild)
             + self._CountRecursive(node.RightChild)
         )
+        
+    def WideAllNodes(self):
+        if self.Root is None:
+            return []
+        
+        queue = [self.Root]
+        result = []
+        
+        while queue:
+            node = queue.pop(0)
+            result.append(node)
+            if node.LeftChild is not None:
+                queue.append(node.LeftChild)
+            if node.RightChild is not None:
+                queue.append(node.RightChild)
+        
+        return result
+    
+    def DeepAllNodes(self, order):
+        result = []
+
+        def in_order(node):
+            if node is not None:
+                in_order(node.LeftChild)
+                result.append((node,))
+                in_order(node.RightChild)
+
+        def post_order(node):
+            if node is not None:
+                post_order(node.LeftChild)
+                post_order(node.RightChild)
+                result.append((node,))
+
+        def pre_order(node):
+            if node is not None:
+                result.append((node,))
+                pre_order(node.LeftChild)
+                pre_order(node.RightChild)
+
+        if order == 0:
+            in_order(self.Root)
+        elif order == 1:
+            post_order(self.Root)
+        elif order == 2:
+            pre_order(self.Root)
+
+        return result
