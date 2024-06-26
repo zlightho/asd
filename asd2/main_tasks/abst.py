@@ -9,7 +9,7 @@ class aBST:
         while index < len(self.Tree):
             if self.Tree[index] is None:
                 return -index
-            if self.Tree[index] == key:
+            elif self.Tree[index] == key:
                 return index
             elif key < self.Tree[index]:
                 index = 2 * index + 1
