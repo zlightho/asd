@@ -25,5 +25,4 @@ class aBST:
             index = -index
         if self.Tree[index] is None:
             self.Tree[index] = key
-            return index
         return index
