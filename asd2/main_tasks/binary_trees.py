@@ -6,6 +6,7 @@ class BSTNode:
         self.Parent = parent
         self.LeftChild = None
         self.RightChild = None
+        self.Level = 0
 
 
 class BSTFind:
@@ -30,6 +31,7 @@ class BST:
             if current.NodeKey == key:
                 result.Node = current
                 result.NodeHasKey = True
+                return result
             elif key < current.NodeKey:
                 if current.LeftChild is None:
                     result.Node = current
@@ -43,7 +45,7 @@ class BST:
                 current = current.RightChild
 
         return result
-    
+
     def AddKeyValue(self, key, val):
         find_result = self.FindNodeByKey(key)
 
@@ -128,7 +130,7 @@ class BST:
             + self._CountRecursive(node.LeftChild)
             + self._CountRecursive(node.RightChild)
         )
-        
+
     def WideAllNodes(self):
         if self.Root is None:
             return []
@@ -175,3 +177,62 @@ class BST:
             pre_order(self.Root)
 
         return result
+
+
+def GenerateBBSTArray(a):
+    a = sorted(a)
+
+    tree_size = 2 ** (len(a).bit_length()) - 1
+    array_bst = [None] * tree_size
+
+    _binary_sort(a, array_bst, 0)
+    return array_bst
+
+
+def _binary_sort(a, tree, index):
+    if not a:
+        return None
+    mid = len(a) // 2
+    tree[index] = a[mid]
+    _binary_sort(a[:mid], tree, 2 * index + 1)
+    _binary_sort(a[mid + 1 :], tree, 2 * index + 2)
+
+
+class BalancedBST:
+    def __init__(self):
+        self.Root = None
+
+    def GenerateTree(self, a):
+        if not a:
+            self.Root = None
+            return
+        bst_array = GenerateBBSTArray(a)
+        self.Root = self._array_to_bst(bst_array, None, 0)
+
+    def _array_to_bst(self, bst_array, parent, index):
+        if index >= len(bst_array) or bst_array[index] is None:
+            return None
+        node = BSTNode(bst_array[index], None, parent)
+        node.LeftChild = self._array_to_bst(bst_array, node, 2 * index + 1)
+        node.RightChild = self._array_to_bst(bst_array, node, 2 * index + 2)
+        if parent is None:
+            node.Level = 0
+        else:
+            node.Level = parent.Level + 1
+        return node
+
+    def IsBalanced(self, root_node):
+        if root_node is None:
+            return True
+
+        def check_balance(node):
+            if node is None:
+                return 0, True
+            left_height, left_balanced = check_balance(node.LeftChild)
+            right_height, right_balanced = check_balance(node.RightChild)
+            current_balanced = abs(left_height - right_height) <= 1
+            current_height = max(left_height, right_height) + 1
+            return current_height, left_balanced and right_balanced and current_balanced
+
+        _, is_balanced = check_balance(root_node)
+        return is_balanced
