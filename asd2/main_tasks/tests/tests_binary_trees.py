@@ -1,9 +1,10 @@
 import sys
 import os
 import unittest
-from main_tasks.binary_trees import BST, BSTNode, BalancedBST
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+
+from main_tasks.binary_trees import BST, BSTNode, BalancedBST
 
 
 class TestBST(unittest.TestCase):
@@ -143,18 +144,38 @@ class TestBalancedBST(unittest.TestCase):
     def test_generate_tree(self):
         self.bst.GenerateTree([1, 2, 3, 4, 5, 6, 7])
         self.assertTrue(self.bst.IsBalanced(self.bst.Root))
+        self.assertEqual(self.bst.Root.Level, 0)
+        self.assertIsNotNone(self.bst.Root.LeftChild)
+        self.assertEqual(self.bst.Root.LeftChild.Level, 1)
+        self.assertIsNotNone(self.bst.Root.RightChild)
+        self.assertEqual(self.bst.Root.RightChild.Level, 1)
 
     def test_generate_tree_single_element(self):
         self.bst.GenerateTree([1])
         self.assertTrue(self.bst.IsBalanced(self.bst.Root))
+        self.assertEqual(self.bst.Root.Level, 0)
 
     def test_generate_tree_two_elements(self):
         self.bst.GenerateTree([1, 2])
         self.assertTrue(self.bst.IsBalanced(self.bst.Root))
+        self.assertEqual(self.bst.Root.Level, 0)
+        self.assertIsNotNone(self.bst.Root.LeftChild or self.bst.Root.RightChild)
+        if self.bst.Root.LeftChild:
+            self.assertEqual(self.bst.Root.LeftChild.Level, 1)
+            self.assertIsNone(self.bst.Root.RightChild)
+        else:
+            self.assertIsNotNone(self.bst.Root.RightChild)
+            self.assertEqual(self.bst.Root.RightChild.Level, 1)
+            self.assertIsNone(self.bst.Root.LeftChild)
 
     def test_generate_tree_unbalanced(self):
         self.bst.GenerateTree([1, 2, 3, 4, 5])
         self.assertTrue(self.bst.IsBalanced(self.bst.Root))
+        self.assertEqual(self.bst.Root.Level, 0)
+        self.assertIsNotNone(self.bst.Root.LeftChild)
+        self.assertEqual(self.bst.Root.LeftChild.Level, 1)
+        self.assertIsNotNone(self.bst.Root.RightChild)
+        self.assertEqual(self.bst.Root.RightChild.Level, 1)
 
     def test_is_balanced_empty_tree(self):
         self.assertTrue(self.bst.IsBalanced(None))

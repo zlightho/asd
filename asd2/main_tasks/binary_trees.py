@@ -205,20 +205,18 @@ class BalancedBST:
     def GenerateTree(self, a):
         if not a:
             self.Root = None
-            return
-        bst_array = GenerateBBSTArray(a)
-        self.Root = self._array_to_bst(bst_array, None, 0)
+        a.sort()
+        self.Root = self._generate_tree(a, 0, len(a) - 1, None, 0)
+        return self.Root
 
-    def _array_to_bst(self, bst_array, parent, index):
-        if index >= len(bst_array) or bst_array[index] is None:
+    def _generate_tree(self, a, start, end, parent, level):
+        if start > end:
             return None
-        node = BSTNode(bst_array[index], None, parent)
-        node.LeftChild = self._array_to_bst(bst_array, node, 2 * index + 1)
-        node.RightChild = self._array_to_bst(bst_array, node, 2 * index + 2)
-        if parent is None:
-            node.Level = 0
-        else:
-            node.Level = parent.Level + 1
+        mid = (start + end) // 2
+        node = BSTNode(a[mid], None, parent)
+        node.Level = level
+        node.LeftChild = self._generate_tree(a, start, mid - 1, node, level + 1)
+        node.RightChild = self._generate_tree(a, mid + 1, end, node, level + 1)
         return node
 
     def IsBalanced(self, root_node):
