@@ -78,3 +78,27 @@ class SimpleTree:
         node.Level = level
         for child in node.Children:
             self._SetLevelsRecursive(child, level + 1)
+
+    
+    def EvenTrees(self):
+        if self.Root is None:
+            return []
+
+        to_remove = []
+        self._check_even_subtree(self.Root, to_remove)
+        return [(to_remove[i], to_remove[i + 1]) for i in range(0, len(to_remove), 2)]
+
+    def _count_nodes(self, node):
+        if node is None:
+            return 0
+        count = 1
+        for child in node.Children:
+            count += self._count_nodes(child)
+        return count
+
+    def _check_even_subtree(self, node, to_remove):
+        for child in node.Children:
+            self._check_even_subtree(child, to_remove)
+            if self._count_nodes(child) % 2 == 0:
+                to_remove.append(node)
+                to_remove.append(child)
