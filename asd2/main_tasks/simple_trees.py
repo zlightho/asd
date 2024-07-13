@@ -79,14 +79,13 @@ class SimpleTree:
         for child in node.Children:
             self._SetLevelsRecursive(child, level + 1)
 
-    
     def EvenTrees(self):
         if self.Root is None:
             return []
 
         to_remove = []
         self._check_even_subtree(self.Root, to_remove)
-        return [(to_remove[i], to_remove[i + 1]) for i in range(0, len(to_remove), 2)]
+        return to_remove
 
     def _count_nodes(self, node):
         if node is None:

@@ -130,8 +130,9 @@ class TestSimpleTree(unittest.TestCase):
         self.assertEqual(child2.Level, 1)
         self.assertEqual(grandchild1.Level, 2)
         self.assertEqual(grandchild2.Level, 2)
-        
-class TestSimpleTree(unittest.TestCase):
+
+
+class TestEvenTree(unittest.TestCase):
     def setUp(self):
         self.root = SimpleTreeNode(1, None)
         self.tree = SimpleTree(self.root)
@@ -139,33 +140,33 @@ class TestSimpleTree(unittest.TestCase):
         node2 = SimpleTreeNode(2, self.root)
         node3 = SimpleTreeNode(3, self.root)
         node6 = SimpleTreeNode(6, self.root)
-        node5 = SimpleTreeNode(5, node2)
-        node7 = SimpleTreeNode(7, node2)
-        node4 = SimpleTreeNode(4, node3)
-        node8 = SimpleTreeNode(8, node6)
-        node9 = SimpleTreeNode(8, node8)
-        node10 = SimpleTreeNode(10, node8)
+        node5 = SimpleTreeNode(4, node3)
+        node7 = SimpleTreeNode(7, node3)
+        node4 = SimpleTreeNode(8, node6)
+        node8 = SimpleTreeNode(9, node6)
+        node9 = SimpleTreeNode(9, node6)
+        node10 = SimpleTreeNode(10, node6)
 
         self.tree.AddChild(self.root, node2)
         self.tree.AddChild(self.root, node3)
         self.tree.AddChild(self.root, node6)
         self.tree.AddChild(node2, node5)
-        self.tree.AddChild(node2, node7)
+        self.tree.AddChild(node2, node5)
         self.tree.AddChild(node3, node4)
         self.tree.AddChild(node6, node8)
         self.tree.AddChild(node8, node9)
         self.tree.AddChild(node8, node10)
 
     def test_even_trees(self):
-        to_remove = self.tree.EvenTrees()
-        expected_pairs = [
-            (self.root, self.tree.Root.Children[1]),  # (1, 3)
-            (self.root, self.tree.Root.Children[2])  # (1, 6)
-        ]
-        result_pairs = [(parent.NodeValue, child.NodeValue) for parent, child in to_remove]
-        expected_pairs_values = [(parent.NodeValue, child.NodeValue) for parent, child in expected_pairs]
+        result_pairs = self.tree.EvenTrees()
+        expected_pairs = [1, 3, 1, 6]
+        result_pairs_values = [node.NodeValue for node in result_pairs]
 
-        self.assertEqual(result_pairs, expected_pairs_values)
+        self.assertEqual(expected_pairs, result_pairs_values)
+
+
+if __name__ == "__main__":
+    unittest.main()
 
 
 if __name__ == "__main__":
