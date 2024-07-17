@@ -81,7 +81,7 @@ class SimpleGraph:
         path = Stack()
         # 1) Выбираем текущую вершину X. Для начала работы это будет исходная вершина А.
         if self._dfs(VFrom, VTo, path):
-            return [self.vertex[v].Value for v in path]
+            return [self.vertex[v] for v in path]
         else:
             return []
 
