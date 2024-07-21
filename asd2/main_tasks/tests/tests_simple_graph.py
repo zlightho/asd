@@ -6,6 +6,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 
 from main_tasks.simple_graph import SimpleGraph
 
+
 class TestSimpleGraph(unittest.TestCase):
     def setUp(self):
         self.graph = SimpleGraph(5)
@@ -55,7 +56,6 @@ class TestSimpleGraph(unittest.TestCase):
             self.assertFalse(self.graph.IsEdge(0, i))
             self.assertFalse(self.graph.IsEdge(i, 0))
 
-
     def test_dfs_path_exists(self):
         self.graph.AddVertex(1)
         self.graph.AddVertex(2)
@@ -83,9 +83,37 @@ class TestSimpleGraph(unittest.TestCase):
         path = self.graph.DepthFirstSearch(0, 0)
         self.assertEqual([v.Value for v in path], [1])
 
-if __name__ == '__main__':
+    def test_bfs_path_exists(self):
+        self.graph.AddVertex(1)
+        self.graph.AddVertex(2)
+        self.graph.AddVertex(3)
+        self.graph.AddVertex(4)
+        self.graph.AddVertex(5)
+        self.graph.AddEdge(0, 1)
+        self.graph.AddEdge(1, 2)
+        self.graph.AddEdge(2, 3)
+        self.graph.AddEdge(3, 4)
+        path = self.graph.BreadthFirstSearch(0, 4)
+        self.assertEqual([v.Value for v in path], [1, 2, 3, 4, 5])
+
+    def test_bfs_no_path(self):
+        self.graph.AddVertex(1)
+        self.graph.AddVertex(2)
+        self.graph.AddVertex(3)
+        self.graph.AddVertex(4)
+        self.graph.AddVertex(5)
+        path = self.graph.BreadthFirstSearch(0, 4)
+        self.assertEqual(path, [])
+
+    def test_bfs_same_node(self):
+        self.graph.AddVertex(1)
+        path = self.graph.BreadthFirstSearch(0, 0)
+        self.assertEqual([v.Value for v in path], [1])
+
+
+if __name__ == "__main__":
     unittest.main()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
