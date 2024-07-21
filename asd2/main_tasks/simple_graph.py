@@ -103,8 +103,8 @@ class SimpleGraph:
         # 1) Выбираем текущую вершину X. Для начала работы это будет исходная вершина А.
         if self._dfs(VFrom, VTo, path):
             return [self.vertex[v] for v in path]
-        else:
-            return []
+
+        return []
 
     def _dfs(self, current, VTo, path):
         # 2) Фиксируем вершину X как посещённую.
