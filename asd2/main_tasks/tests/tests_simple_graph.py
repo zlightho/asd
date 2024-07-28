@@ -110,6 +110,56 @@ class TestSimpleGraph(unittest.TestCase):
         path = self.graph.BreadthFirstSearch(0, 0)
         self.assertEqual([v.Value for v in path], [1])
 
+    def test_weak_vertices_no_triangle(self):
+        self.graph.AddVertex(1)
+        self.graph.AddVertex(2)
+        self.graph.AddVertex(3)
+        self.graph.AddEdge(0, 1)
+        self.graph.AddEdge(1, 2)
+        weak_vertices = self.graph.WeakVertices()
+        self.assertEqual([v.Value for v in weak_vertices], [1, 2, 3])
+
+    def test_weak_vertices_with_triangle(self):
+        self.graph.AddVertex(1)
+        self.graph.AddVertex(2)
+        self.graph.AddVertex(3)
+        self.graph.AddVertex(4)
+        self.graph.AddVertex(5)
+        self.graph.AddEdge(0, 1)
+        self.graph.AddEdge(1, 2)
+        self.graph.AddEdge(2, 0)
+        self.graph.AddEdge(3, 4)
+        weak_vertices = self.graph.WeakVertices()
+        self.assertEqual([v.Value for v in weak_vertices], [4, 5])
+
+    def test_weak_vertices_all_in_triangle(self):
+        self.graph.AddVertex(1)
+        self.graph.AddVertex(2)
+        self.graph.AddVertex(3)
+        self.graph.AddEdge(0, 1)
+        self.graph.AddEdge(1, 2)
+        self.graph.AddEdge(2, 0)
+        weak_vertices = self.graph.WeakVertices()
+        self.assertEqual([v.Value for v in weak_vertices], [])
+
+    def test_weak_vertices_multiple_triangles(self):
+        self.graph = SimpleGraph(7)
+        self.graph.AddVertex(0)
+        self.graph.AddVertex(1)
+        self.graph.AddVertex(2)
+        self.graph.AddVertex(3)
+        self.graph.AddVertex(4)
+        self.graph.AddVertex(5)
+        self.graph.AddVertex(6)
+        self.graph.AddEdge(0, 1)
+        self.graph.AddEdge(1, 2)
+        self.graph.AddEdge(2, 0)
+        self.graph.AddEdge(1, 3)
+        self.graph.AddEdge(3, 4)
+        self.graph.AddEdge(4, 1)
+        weak_vertices = self.graph.WeakVertices()
+        self.assertEqual([v.Value for v in weak_vertices], [5, 6])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -173,3 +173,60 @@ class SimpleGraph:
                         return [self.vertex[v] for v in reversed(path)]
 
         return []
+
+    def WeakVertices(self):
+        weak_vertices = []
+        for v in range(self.max_vertex):
+            if self.vertex[v] is None:
+                continue
+            neighbors = [
+                i for i in range(self.max_vertex) if self.m_adjacency[v][i] == 1
+            ]
+            found_triangle = False
+            for i in range(len(neighbors)):
+                for j in range(i + 1, len(neighbors)):
+                    if self.m_adjacency[neighbors[i]][neighbors[j]] == 1:
+                        found_triangle = True
+                        break
+                if found_triangle:
+                    break
+            if not found_triangle:
+                weak_vertices.append(self.vertex[v])
+        return weak_vertices
+
+    def isConnected(self, i, j, k):
+        return (
+            self.m_adjacency[i][j] == 1
+            or self.m_adjacency[j][k] == 1
+            or self.m_adjacency[k][i] == 1
+        )
+
+
+def print_weak_vertices(graph):
+    weak_vertices = graph.WeakVertices()
+    print("Weak vertices:", [v.Value for v in weak_vertices])
+
+
+# Создаем граф
+graph = SimpleGraph(5)
+graph.AddVertex(1)
+graph.AddVertex(2)
+graph.AddVertex(3)
+graph.AddVertex(4)
+graph.AddVertex(5)
+
+# Добавляем ребра
+graph.AddEdge(0, 1)
+graph.AddEdge(1, 2)
+graph.AddEdge(2, 0)  # Треугольник 0-1-2
+
+graph.AddEdge(3, 4)  # Отдельное ребро
+
+# Проверка слабых вершин
+print_weak_vertices(graph)  # Ожидаемый результат: вершины 3 и 4
+
+graph.AddEdge(0, 3)
+graph.AddEdge(1, 3)
+graph.AddEdge(2, 4)
+
+print_weak_vertices(graph)  # Ожидаемый результат: вершина 4
