@@ -176,13 +176,16 @@ class SimpleGraph:
 
     def WeakVertices(self):
         weak_vertices = []
+
         for v in range(self.max_vertex):
             if self.vertex[v] is None:
                 continue
+
             neighbors = [
                 i for i in range(self.max_vertex) if self.m_adjacency[v][i] == 1
             ]
             found_triangle = False
+
             for i in range(len(neighbors)):
                 for j in range(i + 1, len(neighbors)):
                     if self.m_adjacency[neighbors[i]][neighbors[j]] == 1:
@@ -190,6 +193,7 @@ class SimpleGraph:
                         break
                 if found_triangle:
                     break
+
             if not found_triangle:
                 weak_vertices.append(self.vertex[v])
         return weak_vertices
